@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Algorithm Visualizer</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Favicons -->
+	<link rel="shortcut icon" href="favicons/favicon.ico" type="image/x-icon">
+	
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<!-- Fonts -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/icon.css">
+    <link rel="stylesheet" href="css/styles.css">
+	<script src="https://kit.fontawesome.com/392f38971b.js" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+    <header>
+		<nav id="controller" class="navbar navbar-expand-lg navbar-dark bg-transparent py-2">
+			<!-- navbar hamburger menu icon -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- navbar content -->
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav m-auto align-items-center">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="algorithmsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							algorithms
+						</a>
+						<div class="dropdown-menu" aria-labelledby="algorithmsDropdown">
+							<a class="dropdown-item" id="depth-first-search">Depth First Search</a>
+							<a class="dropdown-item" id="breadth-first-search">Breadth First Search</a>
+							<a class="dropdown-item" id="dijkstra">Dijkstra</a>
+							<a class="dropdown-item" id="a-star">A*</a>
+						</div>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="mazes&patternDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							mazes & pattern
+						</a>
+						<div class="dropdown-menu" aria-labelledby="mazes&patternDropdown">
+							<a class="dropdown-item">Recursive Division</a>
+							<a class="dropdown-item">Recursive Division (verticle skew)</a>
+							<a class="dropdown-item">Recursive Division (horizontal skew)</a>
+							<a class="dropdown-item">Basic Random Maze</a>
+							<a class="dropdown-item">Simple Stair Pattern</a>
+						</div>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="speed-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Speed: <span>Normal</span>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="mazes&patternDropdown">
+							<a class="dropdown-item" id="speed-slow">Slow</a>
+							<a class="dropdown-item" id="speed-normal">Normal</a>
+							<a class="dropdown-item" id="speed-fast">Fast</a>
+						</div>
+					</li>
+
+					<li class="nav-item">
+						<a class="btn btn-sm" id="visualize">visualize</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" id="clear-path">clear path</a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" id="clear-board">clear board</a>
+					</li>
+
+					<li class="nav-item">
+                        <label class="text-white m-0" for="grid-size">Node Size:</label>
+						<input name="grid-size" type="range" class="slider" id="grid-size" value="30" min="25" step="2" max="100" value="50">
+					</li>
+				</ul>
+			</div>
+		</nav>
+    </header>
+	
+    <main>
+		<section id="grid-helper">
+			<!-- Start Node -->
+			<div class="helper-node-container">
+				<div data-toggle="tooltip" title="<em><strong>Click</strong></em> and <b>drag</b> to move" id="start-node"></div>
+				<div class="node-name">Start Node</div>
+			</div>
+	
+			<div class="helper-node-container">
+				<div data-toggle="tooltip" title="<em><strong>Click</strong></em> and <b>drag</b> to move" id="end-node"></div>
+				<div class="node-name">End Node</div>
+			</div>
+	
+			<div class="helper-node-container">
+				<div data-toggle="tooltip"  title="<em><strong>Click</strong></em> and <b>drag</b> to <b>Create</b><br/><em></em> and <b>Remove</b>" id="wall-node"></div>
+				<div class="node-name">Wall Node</div>
+			</div>
+	
+			<div class="helper-node-container">
+				<div data-toggle="tooltip"  title="<em><strong>Ctrl</strong></em> + <b>Click</b> and <b>drag</b> to <b>Create</b><br/><em></em> and <b>Remove</b>" id="weight-node"></div>
+				<div class="node-name">Weight Node</div>
+			</div>
+	
+			<div class="helper-node-container">
+				<div id="unvisited-node"></div>
+				<div class="node-name">Unvisited Node</div>
+			</div>
+			
+			<div class="helper-node-container">
+				<div id="current-node"></div>
+				<div class="node-name">current Node</div>
+			</div>
+			
+			<div class="helper-node-container">
+				<div id="visited-container" class="justify-node">
+					<div id="visited-node-forward"></div>
+					<div id="visited-node-backward"></div>
+				</div>
+				<div class="node-name"> Visited Node</div>
+			</div>
+	
+		</section>
+		<table class="table" id="grid-container"></table>
+    </main>
+
+
+	<footer class="mt-4">
+		<div class="text-center p-3">
+			<a class="text-light">© 2020 Copyright: Muhammad Amir Abbasi</a>
+			<div class="social-icons my-2">
+				<a class="btn btn-circle text-light" style="background-color: #0082ca;" href="https://www.linkedin.com/in/muhammad-amir-9826b71b5/" target="_blank">
+					<i class="fab fa-linkedin-in"></i>
+				</a>
+				<a class="btn btn-circle ml-2" style="background-color: #cecece;" href="https://github.com/MuhammadAmir5670" target="_blank">
+					<i class="fab fa-github"></i>
+				</a>
+				<a class="btn btn-circle ml-2" style="background-color: #3b5998;" href="https://www.facebook.com/daniyal.abbasi.1610/" target="_blank">
+					<i class="fab fa-facebook-f text-light"></i>
+				</a>
+			</div>
+		</div>
+	</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+    <!-- Optional JavaScript -->
+	<script src="scripts/vendor/bootstrap-notify/bootstrap-notify.min.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/nodes.js"></script>
+    <script src="scripts/grid.js"></script>
+    <script src="scripts/algorithms/data structures.js"></script>
+    <script src="scripts/algorithms/dfs.js"></script>
+    <script src="scripts/algorithms/bfs.js"></script>
+    <script src="scripts/algorithms/dijkstra.js"></script>
+    <script src="scripts/algorithms/astar.js"></script>
+    <script src="scripts/app.js"></script>
+    
+  </body>
+</html>

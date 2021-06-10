@@ -1,0 +1,418 @@
+// Variables
+$node-border-width: 1px;
+$node-border-color: #00c09d;
+$wall-node-bg-color: #ffff;
+$current-node-bg-color: #f9ff21;
+$current-node-border-color: #ffd615;
+
+$visited-node-pre-bg-color: #00c09d;
+$visited-node-bg-color: #28C7FA;
+$visited-node-bg-transition-color: rgba(17,104,217,1);
+$visited-node-post-bg-color: #21E6C1;
+
+$backtrack-node-bg-color: rgba(17,104,217,1);
+$backtrack-node-bg-transition-color: #2f89fc;
+$path-node-bg-color: #f9ff21;
+$path-node-bg-trasition-color: #ffd615;
+
+/* ---------------  Mixins  ----------------- */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #292f3f;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+[data-notify='container'] [data-notify="message"]{
+    font-size: 14px;
+}
+
+.btn-circle {
+    border-radius: 50%;
+}
+
+/* ---------------  Header  ----------------- */
+
+nav {
+    border: 0;
+}
+
+.navbar-nav .nav-item {
+    margin-left: 40px;
+    text-transform: capitalize;
+}
+
+.navbar-nav .nav-item .nav-link {
+    position: relative;
+    color: white !important;
+    cursor: pointer;
+    padding: 5px 15px;
+}
+
+.navbar-nav .nav-item .nav-link.disabled {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: $visited-node-pre-bg-color !important;
+}
+
+.navbar-nav .nav-item:first-of-type {
+    margin-left: 0px;
+}
+
+.navbar-nav .nav-item .btn {
+    padding: 5px 30px !important;
+    border: 2px solid #00c09d;
+    color: #00c09d;
+    cursor: pointer;
+}
+
+.navbar-nav .nav-item .btn:hover {
+    background-color: #00c09d;
+}
+
+.dropdown-menu {
+    padding: 0px;
+    border-radius: 0px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, 0.6);
+    color: #292f3f;
+}
+
+.dropdown-menu .dropdown-item {
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-menu .dropdown-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: $visited-node-pre-bg-color;
+    display: none;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #292f3f;
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.dropdown-menu .dropdown-item:hover::before {
+    display: block;
+    color: white !important;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: $visited-node-post-bg-color;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #04AA6D;
+    cursor: pointer;
+}
+
+.slider:disabled {
+    background-color: rgba(255, 255, 255, 0.6);
+    cursor: default;
+}
+
+.slider:disabled::-webkit-slider-thumb {
+    background: #029962;
+    cursor: default;
+}
+
+#grid-container {
+    margin: auto;
+    box-sizing: border-box;
+    height: 96vh;
+    width: 98vw;
+}
+
+/* ---------------  Nodes  ----------------- */
+.node {
+    border: $node-border-width solid $node-border-color !important;
+    padding: 0px !important;
+}
+
+.start-node {
+    text-align:center;
+    background-image: url(/images/start.svg);
+    animation: scale-up 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.end-node {
+    text-align:center;
+    background-image: url(/images/end.svg);
+    animation: scale-up 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.wall-node {
+    border: 0;
+    background-color: $wall-node-bg-color;
+    animation: scale-up 0.3s ease-in-out;
+}
+
+.weight-node {
+    text-align:center;
+    background-image: url(/images/weight.svg);
+    animation: scale-up 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.current-node {
+    border: $node-border-width solid $current-node-border-color !important;
+    background-color: $current-node-bg-color;
+}
+
+.visited-node {
+    border: $node-border-width solid $backtrack-node-bg-color!important;
+    background-color: $visited-node-bg-color;
+    animation: visited 1.5s ease-out, pulse 1s ease-in-out 5s 1;
+}
+
+.path-node {
+    border: $node-border-width solid $current-node-border-color !important;
+    background-color: $current-node-bg-color;
+    animation: path-node-animation 1.5s ease-in-out, path-pulse 1s ease-in-out 10s 3;
+}
+
+.backtrack-node {
+    animation: backtrack 1s ease-in-out;
+}
+
+.retraced-visited-node {
+    border: $node-border-width solid $backtrack-node-bg-color!important;
+    background-color: $visited-node-bg-color;
+}
+
+.retraced-path-node {
+    border: $node-border-width solid $current-node-border-color !important;
+    background-color: $current-node-bg-color;
+    animation: path-pulse 1s ease-in-out 10s 3;
+}
+
+
+/* ---------------  Animation KeyFrames  ----------------- */
+
+@keyframes scale-up {
+    0% {
+        transform: scale(.3);
+    }
+
+    80% {
+        transform: scale(1.2);
+    }
+  
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes visited {
+    0% {
+        transform: scale(0.3);
+        background-color: $visited-node-pre-bg-color;
+        border-radius: 100%;
+    }
+    
+    50% {
+        background-color: $visited-node-bg-transition-color;
+    }
+
+    75% {
+        transform: scale(1.2);
+        background-color: $visited-node-post-bg-color;
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: $visited-node-bg-color;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        background-color: $visited-node-bg-color;
+    }
+    50% {
+        background-color: $backtrack-node-bg-color;
+    }
+    100% {
+        background-color: $visited-node-bg-color;
+    }
+}
+
+@keyframes path-node-animation {
+    0% {
+        background-color: $path-node-bg-color;
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        background-color: $path-node-bg-trasition-color;
+    }
+  
+    100% {
+        background-color: $path-node-bg-color;
+        transform: scale(1);
+    }
+}
+
+@keyframes path-pulse {
+    0% {
+        background-color: $current-node-bg-color;
+    }
+    50% {
+        background-color: $current-node-border-color;
+    }
+    100% {
+        background-color: $current-node-bg-color;
+    }
+}
+
+@keyframes backtrack {
+    0%  {
+        background-color: $backtrack-node-bg-color;
+    }
+  
+    75%  {
+        background-color: $backtrack-node-bg-transition-color;
+    }
+    100%  {
+        background-color: $visited-node-bg-color;
+    }
+}
+
+
+#grid-helper{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: .4rem;
+    padding: 20px 0px;
+    color: white;
+
+    .helper-node-container{
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+
+        .node-name {
+            margin-left: 10px;
+        }
+
+        #start-node{
+            width: 30px;
+            height: 30px;
+            background-image: url(/images/start.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        
+        #end-node{
+            width: 30px;
+            height: 30px;
+            background-image: url(/images/end.svg);
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        
+        #wall-node{
+            width: 30px;
+            height: 30px;
+            background-color: $wall-node-bg-color;
+            box-sizing: border-box;
+        }
+        
+        #weight-node{
+            width:28px;
+            height:28px;
+            border-width: 2px;
+            border-style: solid;
+            border-color: $wall-node-bg-color;
+        }
+        
+        #unvisited-node{
+            width: 28px;
+            height: 28px;
+            border: 2px solid $node-border-color;
+        }
+        
+        #current-node{
+            width:28px;
+            height:28px;
+            background-color: #ffd400;
+        }
+
+        #visited-node-forward{
+            width:28px;
+            height:28px;
+            background-color: $visited-node-bg-color;
+        }
+
+        #visited-node-backward{
+            width:28px;
+            height:28px;
+            background-color: $visited-node-post-bg-color;
+        }
+
+    }
+}
+
+
+
+#visited-container{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+footer .social-icons {
+    color: white !important;
+}
